@@ -34,10 +34,24 @@ document.addEventListener('DOMContentLoaded', function () {
         const card = document.createElement('div');
         card.classList.add('card');
         card.dataset.id = id;
-        card.style.backgroundColor = colors[id];
+    
+        // Create card front and back
+        const cardFront = document.createElement('div');
+        cardFront.classList.add('card-front');
+        cardFront.style.backgroundImage = `url('Front_image/Front.jpg')`;
+    
+        const cardBack = document.createElement('div');
+        cardBack.classList.add('card-back');
+        cardBack.style.backgroundImage = `url('images/image${id}.png')`;
+
+
+        card.appendChild(cardFront);
+        card.appendChild(cardBack);
+    
         card.addEventListener('click', flipCard);
         return card;
     }
+    
 
     function flipCard() {
         if (lockBoard) return;
