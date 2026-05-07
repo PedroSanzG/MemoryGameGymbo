@@ -1,117 +1,97 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const cardGrid = document.querySelector('.card-grid');
-    const levelSelect = document.getElementById('level-select');
-    let attempts = 0;
-    let hasFlippedCard = false;
-    let lockBoard = false;
-    let firstCard, secondCard;
+const questions = [
+  "How satisfied are you with the event organization?",
+  "How clear was the communication before the event?",
+  "How useful was the content presented?",
+  "How engaging were the activities?",
+  "How likely are you to recommend this experience?",
+  "Rate the quality of the facilitators.",
+  "How interactive was the session?",
+  "How valuable was the information shared?",
+  "How easy was it to participate?",
+  "Overall experience rating."
+];
 
-    const colors = ['red', 'green', 'blue', 'yellow', 'purple', 'cyan', 'orange', 'pink'];
+let currentQuestion = 0;
+let answers = [];
 
-    function initializeGame(level) {
-        const cards = [];
-        let pairs = 4; // Easy
-        if (level === 'intermediate') pairs = 6; // Intermediate
-        if (level === 'hard') pairs = 8; // Hard
+const startScreen = document.getElementById("startScreen");
+const quizScreen = document.getElementById("quizScreen");
+const resultScreen = document.getElementById("resultScreen");
+const questionText = document.getElementById("questionText");
+const questionCounter = document.getElementById("questionCounter");
+const questionPercent = document.getElementById("questionPercent");
+const progressFill = document.getElementById("progressFill");
+const scaleButtons = document.getElementById("scaleButtons");
+const finalScore = document.getElementById("finalScore");
+const answerSummary = document.getElementById("answerSummary");
 
-        for (let i = 0; i < pairs; i++) {
-            const card1 = createCard(i);
-            const card2 = createCard(i);
-            cards.push(card1, card2);
-        }
+function startQuiz() {
+  currentQuestion = 0;
+  answers = [];
 
-        // Shuffle the cards
-        cards.sort(() => 0.5 - Math.random());
+  startScreen.classList.add("hidden");
+  resultScreen.classList.add("hidden");
+  quizScreen.classList.remove("hidden");
 
-        // Add cards to the grid
-        cardGrid.innerHTML = '';
-        cards.forEach(card => cardGrid.appendChild(card));
+  showQuestion();
+}
 
-        updateAttempts();
-    }
+function showQuestion() {
+  questionText.textContent = questions[currentQuestion];
 
-    function createCard(id) {
-        const card = document.createElement('div');
-        card.classList.add('card');
-        card.dataset.id = id;
-    
-        // Create card front and back
-        const cardFront = document.createElement('div');
-        cardFront.classList.add('card-front');
-        cardFront.style.backgroundImage = `url('Front_image/Front.jpg')`;
-    
-        const cardBack = document.createElement('div');
-        cardBack.classList.add('card-back');
-        cardBack.style.backgroundImage = `url('images/image${id}.png')`;
+  const questionNumber = currentQuestion + 1;
+  const percent = Math.round((questionNumber / questions.length) * 100);
 
+  questionCounter.textContent = `Question ${questionNumber} / ${questions.length}`;
+  questionPercent.textContent = `${percent}%`;
+  progressFill.style.width = `${percent}%`;
 
-        card.appendChild(cardFront);
-        card.appendChild(cardBack);
-    
-        card.addEventListener('click', flipCard);
-        return card;
-    }
-    
+  scaleButtons.innerHTML = "";
 
-    function flipCard() {
-        if (lockBoard) return;
-        if (this === firstCard) return;
+  for (let i = 1; i <= 5; i++) {
+    const button = document.createElement("button");
+    button.className = "scale-button";
+    button.textContent = i;
+    button.onclick = () => selectAnswer(i);
+    scaleButtons.appendChild(button);
+  }
+}
 
-        this.classList.add('flip');
+function selectAnswer(value) {
+  answers.push(value);
 
-        if (!hasFlippedCard) {
-            hasFlippedCard = true;
-            firstCard = this;
-            return;
-        }
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    showQuestion();
+  } else {
+    showResults();
+  }
+}
 
-        secondCard = this;
-        checkForMatch();
-    }
+function showResults() {
+  quizScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
 
-    function checkForMatch() {
-        let isMatch = firstCard.dataset.id === secondCard.dataset.id;
+  const total = answers.reduce((sum, value) => sum + value, 0);
+  const maxPossible = questions.length * 5;
+  const scoreOutOfTen = ((total / maxPossible) * 10).toFixed(1);
 
-        isMatch ? disableCards() : unflipCards();
-    }
+  finalScore.textContent = `${scoreOutOfTen} / 10`;
+  answerSummary.innerHTML = "";
 
-    function disableCards() {
-        firstCard.removeEventListener('click', flipCard);
-        secondCard.removeEventListener('click', flipCard);
+  answers.forEach((answer, index) => {
+    const row = document.createElement("div");
+    row.className = "summary-row";
+    row.innerHTML = `<span>Question ${index + 1}</span><strong>${answer}/5</strong>`;
+    answerSummary.appendChild(row);
+  });
+}
 
-        resetBoard();
-    }
+function restartQuiz() {
+  currentQuestion = 0;
+  answers = [];
 
-    function unflipCards() {
-        lockBoard = true;
-
-        setTimeout(() => {
-            firstCard.classList.remove('flip');
-            secondCard.classList.remove('flip');
-
-            resetBoard();
-        }, 1500);
-    }
-
-    function resetBoard() {
-        [hasFlippedCard, lockBoard] = [false, false];
-        [firstCard, secondCard] = [null, null];
-    }
-
-    function updateAttempts() {
-        attempts++;
-        document.getElementById('attempts').innerText = 'Attempts: ' + attempts;
-    }
-
-    levelSelect.addEventListener('change', function() {
-        initializeGame(this.value);
-    });
-
-    document.getElementById('restart-button').addEventListener('click', function() {
-        cardGrid.innerHTML = '';
-        attempts = 0;
-        initializeGame(levelSelect.value);
-    });
-
-    initializeGame(levelSelect.value);
-});
+  resultScreen.classList.add("hidden");
+  quizScreen.classList.add("hidden");
+  startScreen.classList.remove("hidden");
+}
