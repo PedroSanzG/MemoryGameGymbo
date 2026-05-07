@@ -1,153 +1,187 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #FF0000;
-    text-align: center;
-    width: 100vw;
-    height: 100vh;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
 }
 
-.game-container {
-    width: 99vw;
-    height: 99vh;
-    margin: auto;
-    padding: 2vw;
-    background-color: #fff;
-    box-shadow: 0 0 1vw rgba(0, 0, 0, 0.1);
-    border-radius: 0.8vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #5b21b6, #db2777, #2563eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
 }
 
-header h1 {
-    margin: 0;
-    color: #333;
-    font-size: 4vw; /* Adjust as needed */
+.app {
+  background: white;
+  width: 100%;
+  max-width: 720px;
+  border-radius: 28px;
+  padding: 36px;
+  text-align: center;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
 }
 
-.game-info {
-    margin: 1vw 0;
-    font-size: 2vw; /* Adjust as needed */
+h1 {
+  font-size: 40px;
+  color: #1f2937;
+  margin-bottom: 16px;
 }
 
-.card-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1vw;
-    margin-top: 2vw;
+h2 {
+  font-size: 30px;
+  color: #1f2937;
+  margin-bottom: 28px;
 }
 
-.card {
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 0.4vw;
-    color: white;
-    padding: 1.5vw;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1.6vw; /* Adjust as needed */
-    margin: 0.4vw 0.2vw;
-    transition-duration: 0.4s;
-    cursor: pointer;
-    background-size: cover;
-    background-position: center;
-    width: 20vw; /* Adjust size as needed */
-    height: 20vw; /* Adjust size as needed */
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-    position: relative;
+p {
+  color: #4b5563;
+  font-size: 18px;
+  margin-bottom: 24px;
 }
 
-.card.flip {
-    transform: rotateY(180deg);
+.qr {
+  width: 250px;
+  height: 250px;
+  border: 5px solid #7c3aed;
+  border-radius: 20px;
+  margin-bottom: 28px;
 }
 
-.card-front{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 1vw;
-    box-shadow: 0 0.4vw 0.8vw rgba(0, 0, 0, 0.1);
-    background-size: cover;
+.button {
+  border: none;
+  background: #7c3aed;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 16px 32px;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: 0.25s ease;
 }
 
-.card-back {
-    background: #efefef;
-    color: #333;
-    transform: rotateY(180deg);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 1vw;
-    box-shadow: 0 0.4vw 0.8vw rgba(0, 0, 0, 0.1);
-    background-size: cover;
+.button:hover {
+  background: #6d28d9;
+  transform: scale(1.04);
 }
 
-.card:hover {
-    background-color: #45a049;
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
-#restart-button {
-    background-color: #008CBA;
-    border: none;
-    color: white;
-    padding: 1.5vw 3.2vw;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1.6vw; /* Adjust as needed */
-    margin: 2vw 0;
-    cursor: pointer;
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 36px;
 }
 
-#restart-button:hover {
-    background-color: #007ba7;
+.progress-fill {
+  height: 100%;
+  background: #7c3aed;
+  width: 0%;
+  transition: width 0.4s ease;
 }
 
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 6vw;
-    }
-
-    .game-info {
-        font-size: 3vw;
-    }
-
-    .card {
-        font-size: 2vw;
-        width: 40vw;
-        height: 40vw;
-    }
-
-    #restart-button {
-        font-size: 2vw;
-        padding: 2vw 4vw;
-    }
+.scale-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 14px;
 }
 
-@media (max-width: 480px) {
-    header h1 {
-        font-size: 8vw;
-    }
+.scale-button {
+  border: none;
+  border-radius: 18px;
+  padding: 28px 0;
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  transition: 0.25s ease;
+}
 
-    .game-info {
-        font-size: 4vw;
-    }
+.scale-button:hover {
+  transform: scale(1.08);
+}
 
-    .card {
-        font-size: 3vw;
-        width: 60vw;
-        height: 60vw;
-    }
+.scale-labels {
+  display: flex;
+  justify-content: space-between;
+  color: #6b7280;
+  font-size: 14px;
+}
 
-    #restart-button {
-        font-size: 3vw;
-        padding: 3vw 5vw;
-    }
+.score-box {
+  background: linear-gradient(90deg, #7c3aed, #ec4899);
+  color: white;
+  font-size: 70px;
+  font-weight: bold;
+  padding: 36px;
+  border-radius: 28px;
+  margin: 28px 0;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+}
+
+.summary {
+  background: #f3f4f6;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: left;
+  margin-bottom: 28px;
+}
+
+.summary h3 {
+  color: #374151;
+  margin-bottom: 14px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.trophy {
+  font-size: 60px;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .app {
+    padding: 24px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .scale-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .score-box {
+    font-size: 48px;
+  }
 }
